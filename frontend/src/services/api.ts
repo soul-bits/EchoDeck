@@ -7,7 +7,7 @@ import {
   SlideUpdateResponse,
   ExportRequest,
   ExportResponse,
-  ApiError
+  // ApiError
 } from '../types';
 import { apiUrl } from '../utils';
 

@@ -9,7 +9,7 @@ import FileUpload from '../components/FileUpload';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const { setCurrentSession, setProcessingStatus, setError } = useAppStore();
+  const { setCurrentSession, setError } = useAppStore();
   const [selectedStyle, setSelectedStyle] = useState<PresentationStyle>('creative');
   const [uploadMethod, setUploadMethod] = useState<'upload' | 'record'>('upload');
 
@@ -151,29 +151,36 @@ const Home: React.FC = () => {
 
         {/* Upload Method Selection */}
         <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-6">
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-3">Choose Your Input Method</h3>
+            <p className="text-purple-200/80 text-sm sm:text-base">Select how you'd like to provide your audio content</p>
+          </div>
+          
           <div className="flex justify-center mb-8">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 shadow-xl">
               <button
                 onClick={() => setUploadMethod('upload')}
-                className={`px-8 py-4 rounded-xl transition-all duration-300 font-medium flex items-center space-x-3 ${
+                className={`px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-300 font-medium flex items-center space-x-2 sm:space-x-3 ${
                   uploadMethod === 'upload'
                     ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white shadow-lg'
                     : 'text-purple-200 hover:text-white hover:bg-white/10'
                 }`}
+                aria-label="Upload audio file"
               >
-                <Upload className="w-5 h-5" />
-                <span>Upload File</span>
+                <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-sm sm:text-base">Upload File</span>
               </button>
               <button
                 onClick={() => setUploadMethod('record')}
-                className={`px-8 py-4 rounded-xl transition-all duration-300 font-medium flex items-center space-x-3 ${
+                className={`px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-300 font-medium flex items-center space-x-2 sm:space-x-3 ${
                   uploadMethod === 'record'
                     ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white shadow-lg'
                     : 'text-purple-200 hover:text-white hover:bg-white/10'
                 }`}
+                aria-label="Record audio"
               >
-                <Mic className="w-5 h-5" />
-                <span>Record Audio</span>
+                <Mic className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-sm sm:text-base">Record Audio</span>
               </button>
             </div>
           </div>

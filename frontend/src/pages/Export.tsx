@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Download, FileText, Globe, Video, ArrowLeft, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Download, FileText, ArrowLeft, Eye } from 'lucide-react';
 import { useAppStore } from '../stores/useAppStore';
 import { apiService } from '../services/api';
 import { ExportFormat, QualitySetting } from '../types';
-import SlidePreview from '../components/SlidePreview';
 
 const Export: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,42 +27,6 @@ const Export: React.FC = () => {
     }
   }, [presentation, id, navigate]);
 
-  const exportFormats = [
-    {
-      id: 'pdf' as ExportFormat,
-      name: 'PDF',
-      description: 'Portable document format, perfect for sharing and printing',
-      icon: FileText,
-      color: 'bg-red-500',
-    },
-    {
-      id: 'html' as ExportFormat,
-      name: 'HTML',
-      description: 'Interactive web presentation with navigation controls',
-      icon: Globe,
-      color: 'bg-blue-500',
-    },
-    {
-      id: 'video' as ExportFormat,
-      name: 'Video',
-      description: 'MP4 video with slide transitions and narration',
-      icon: Video,
-      color: 'bg-purple-500',
-    },
-  ];
-
-  const qualityOptions = [
-    {
-      id: 'standard' as QualitySetting,
-      name: 'Standard',
-      description: 'Good quality, smaller file size',
-    },
-    {
-      id: 'high' as QualitySetting,
-      name: 'High',
-      description: 'Best quality, larger file size',
-    },
-  ];
 
   const handleExport = async () => {
     if (!presentation) return;
@@ -278,9 +241,9 @@ const Export: React.FC = () => {
                   {['pdf', 'pptx'].map((format) => (
                     <button
                       key={format}
-                      onClick={() => setExportFormat(format as 'pdf' | 'pptx')}
+                      onClick={() => setSelectedFormat(format as ExportFormat)}
                       className={`p-4 rounded-2xl border-2 transition-all duration-300 backdrop-blur-sm hover:scale-105 ${
-                        exportFormat === format
+                        selectedFormat === format
                           ? 'border-blue-500/60 bg-gradient-to-br from-blue-50/80 to-indigo-50/60 text-blue-700 shadow-lg'
                           : 'border-gray-200/50 hover:border-gray-300/70 text-gray-700 hover:shadow-md'
                       }`}
@@ -303,9 +266,9 @@ const Export: React.FC = () => {
                   {['low', 'medium', 'high'].map((quality) => (
                     <button
                       key={quality}
-                      onClick={() => setExportQuality(quality as 'low' | 'medium' | 'high')}
+                      onClick={() => setSelectedQuality(quality as QualitySetting)}
                       className={`p-4 rounded-2xl border-2 transition-all duration-300 backdrop-blur-sm hover:scale-105 ${
-                        exportQuality === quality
+                        selectedQuality === quality
                           ? 'border-blue-500/60 bg-gradient-to-br from-blue-50/80 to-indigo-50/60 text-blue-700 shadow-lg'
                           : 'border-gray-200/50 hover:border-gray-300/70 text-gray-700 hover:shadow-md'
                       }`}
