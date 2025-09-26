@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FileAudio, Clock, CheckCircle, AlertCircle, ArrowRight } from 'lucide-react';
+import { FileAudio, Clock, CheckCircle, ArrowRight } from 'lucide-react';
 import { useAppStore } from '../stores/useAppStore';
 import { apiService } from '../services/api';
 import { Presentation, Slide } from '../types';
@@ -18,7 +18,7 @@ const Generation: React.FC = () => {
     updatePresentation,
   } = useAppStore();
   
-  const [uploadId, setUploadId] = useState<string | null>(null);
+  const [, setUploadId] = useState<string | null>(null);
   const [presentationId, setPresentationId] = useState<string | null>(null);
   const [slides, setSlides] = useState<Slide[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -99,7 +99,7 @@ const Generation: React.FC = () => {
     }
   };
 
-  const pollTranscription = async (uploadId: string): Promise<void> => {
+  const pollTranscription = async (_uploadId: string): Promise<void> => {
     return new Promise((resolve, reject) => {
       const checkStatus = async () => {
         try {

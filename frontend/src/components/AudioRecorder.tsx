@@ -13,7 +13,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
   const [duration, setDuration] = useState(0);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing] = useState(false);
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -180,9 +180,27 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
         <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent mb-3">
           Record Your Audio
         </h3>
-        <p className="text-purple-100/80 text-base sm:text-lg leading-relaxed px-4">
+        <p className="text-purple-100/80 text-base sm:text-lg leading-relaxed px-4 mb-4">
           Click the microphone to start recording your presentation
         </p>
+        
+        {/* Recording guidelines */}
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 max-w-md mx-auto">
+          <div className="text-sm text-purple-100/90 space-y-2">
+            <div className="flex items-center justify-center space-x-2">
+              <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
+              <span className="font-medium">Speak clearly and at a normal pace</span>
+            </div>
+            <div className="flex items-center justify-center space-x-2">
+              <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
+              <span className="font-medium">Maximum duration: {formatDuration(maxDuration)}</span>
+            </div>
+            <div className="flex items-center justify-center space-x-2">
+              <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
+              <span className="font-medium">You can pause and resume anytime</span>
+            </div>
+          </div>
+        </div>
       </div>
       {!audioBlob ? (
         <div className="text-center">
@@ -195,6 +213,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
               <button
                   onClick={isRecording ? (isPaused ? resumeRecording : pauseRecording) : startRecording}
                   disabled={isProcessing}
+                  aria-label={isRecording ? (isPaused ? 'Resume recording' : 'Pause recording') : 'Start recording'}
                   className={`
                     relative inline-flex items-center justify-center w-24 h-24 rounded-full text-white font-medium transition-all duration-300 mr-6 shadow-2xl backdrop-blur-md
                     ${isRecording && !isPaused
@@ -204,6 +223,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
                       : 'bg-gradient-to-br from-purple-500/80 to-cyan-500/80 hover:from-purple-600/90 hover:to-cyan-600/90 border border-purple-400/30'
                     }
                     ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110 hover:shadow-3xl'}
+                    focus:outline-none focus:ring-4 focus:ring-purple-400/50
                   `}
                 >
                   {isRecording && !isPaused ? (
@@ -219,10 +239,12 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
                   <button
                     onClick={stopRecording}
                     disabled={isProcessing}
+                    aria-label="Stop recording"
                     className={`
                       relative inline-flex items-center justify-center w-20 h-20 rounded-full text-white font-medium transition-all duration-300 shadow-2xl backdrop-blur-md
                       bg-gradient-to-br from-gray-600/80 to-gray-700/80 hover:from-gray-700/90 hover:to-gray-800/90 border border-gray-500/30
                       ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110 hover:shadow-3xl'}
+                      focus:outline-none focus:ring-4 focus:ring-gray-400/50
                     `}
                   >
                     <Square className="w-6 h-6 sm:w-8 sm:h-8" />

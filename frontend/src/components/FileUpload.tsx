@@ -76,10 +76,10 @@ const FileUpload: React.FC<FileUploadProps> = ({
     <div className="w-full">
       {!selectedFile ? (
         <div
-          className={`relative border-2 border-dashed rounded-xl p-10 text-center transition-all duration-300 ${
+          className={`relative border-2 border-dashed rounded-2xl p-8 sm:p-10 lg:p-12 text-center transition-all duration-300 group ${
             dragActive
-              ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50 scale-[1.02] shadow-lg'
-              : 'border-gray-300 hover:border-blue-400 hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50/30 hover:shadow-md'
+              ? 'border-purple-400 bg-gradient-to-br from-purple-50/80 to-cyan-50/80 scale-[1.02] shadow-2xl backdrop-blur-sm'
+              : 'border-white/30 hover:border-purple-300/50 hover:bg-gradient-to-br hover:from-white/20 hover:to-purple-50/20 hover:shadow-xl backdrop-blur-sm'
           }`}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
@@ -92,68 +92,98 @@ const FileUpload: React.FC<FileUploadProps> = ({
             accept={acceptedFormats.join(',')}
             onChange={handleInputChange}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            aria-label="Upload audio file"
           />
           
           <div className="flex flex-col items-center">
-            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-300 ${
+            <div className={`w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 ${
               dragActive 
-                ? 'bg-gradient-to-br from-blue-500 to-indigo-600 shadow-xl scale-110' 
-                : 'bg-gradient-to-br from-gray-100 to-gray-200 hover:from-blue-100 hover:to-indigo-100'
+                ? 'bg-gradient-to-br from-purple-500 to-cyan-500 shadow-2xl scale-110' 
+                : 'bg-gradient-to-br from-white/20 to-purple-100/30 group-hover:from-purple-200/40 group-hover:to-cyan-200/40'
             }`}>
-              <Upload className={`w-10 h-10 transition-colors ${
-                dragActive ? 'text-white' : 'text-gray-500 hover:text-blue-600'
+              <Upload className={`w-8 h-8 sm:w-10 sm:h-10 transition-all duration-300 ${
+                dragActive ? 'text-white' : 'text-purple-400 group-hover:text-purple-500'
               }`} />
             </div>
             
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-3">
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent mb-3">
               Drop your audio file here
             </h3>
             
-            <p className="text-lg text-gray-600 mb-6">
+            <p className="text-base sm:text-lg text-purple-100/80 mb-6 leading-relaxed">
               or click to browse your files
             </p>
             
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              <div className="text-sm text-gray-600 space-y-1">
-                <p className="font-medium">Supported formats: <span className="text-blue-600">MP3, WAV</span></p>
-                <p className="font-medium">Maximum size: <span className="text-blue-600">{formatFileSize(maxSize)}</span></p>
+            <div className="bg-white/20 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-white/30 shadow-lg">
+              <div className="text-sm sm:text-base text-purple-100/90 space-y-2">
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
+                  <p className="font-medium">Supported formats: <span className="text-cyan-300 font-semibold">MP3, WAV, M4A</span></p>
+                </div>
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
+                  <p className="font-medium">Maximum size: <span className="text-cyan-300 font-semibold">{formatFileSize(maxSize)}</span></p>
+                </div>
+                <div className="flex items-center justify-center space-x-2">
+                  <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-cyan-400 rounded-full"></div>
+                  <p className="font-medium">Duration: <span className="text-cyan-300 font-semibold">Up to 5 minutes</span></p>
+                </div>
               </div>
             </div>
+            
+            {/* Visual indicator for drag state */}
+            {dragActive && (
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/10 to-cyan-500/10 animate-pulse"></div>
+            )}
           </div>
         </div>
       ) : (
-        <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl p-8 shadow-lg">
+        <div className="bg-white/20 backdrop-blur-md border border-white/30 rounded-2xl p-6 sm:p-8 shadow-2xl">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                <FileAudio className="w-7 h-7 text-white" />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-2xl flex items-center justify-center shadow-xl animate-pulse">
+                <FileAudio className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
               </div>
-              <div>
-                <p className="font-bold text-gray-900 text-lg">{selectedFile.name}</p>
-                <p className="text-sm text-gray-600 font-medium">{formatFileSize(selectedFile.size)}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-bold text-white text-base sm:text-lg truncate">{selectedFile.name}</p>
+                <p className="text-sm text-purple-200/80 font-medium">{formatFileSize(selectedFile.size)}</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="w-2 h-2 bg-gradient-to-r from-emerald-400 to-green-400 rounded-full"></div>
+                  <span className="text-xs text-emerald-300 font-medium">Ready to process</span>
+                </div>
               </div>
             </div>
             
             <button
               onClick={clearSelection}
-              className="p-2 hover:bg-red-100 rounded-full transition-all duration-200 hover:scale-110 group"
+              className="p-2 hover:bg-red-500/20 rounded-xl transition-all duration-200 hover:scale-110 group"
+              aria-label="Remove file"
             >
-              <X className="w-5 h-5 text-gray-400 group-hover:text-red-500" />
+              <X className="w-5 h-5 text-purple-300 group-hover:text-red-400" />
             </button>
           </div>
           
           <button
             onClick={handleUpload}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-bold text-lg shadow-lg hover:shadow-xl hover:scale-[1.02]"
+            className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white py-4 px-6 rounded-2xl transition-all duration-300 font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.02] group flex items-center justify-center space-x-3"
           >
-            Generate Presentation
+            <Upload className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <span>Generate Presentation</span>
           </button>
         </div>
       )}
       
       {error && (
-        <div className="mt-6 p-4 bg-gradient-to-r from-red-50 to-pink-50 border border-red-200 rounded-xl shadow-md">
-          <p className="text-red-700 font-medium">{error}</p>
+        <div className="mt-6 p-4 sm:p-6 bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-md border border-red-400/30 rounded-2xl shadow-xl">
+          <div className="flex items-start space-x-3">
+            <div className="w-6 h-6 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <X className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-red-200 font-semibold text-sm sm:text-base mb-1">Upload Error</p>
+              <p className="text-red-100/90 text-sm leading-relaxed">{error}</p>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { SessionData, ProcessingStatus, Presentation, Slide } from '../types';
+import { ToastData } from '../components/ToastContainer';
 
 interface AppState {
   // Session data
@@ -10,6 +11,7 @@ interface AppState {
   // UI state
   isRecording: boolean;
   recordingDuration: number;
+  toasts: ToastData[];
   
   // Actions
   setCurrentSession: (session: SessionData | null) => void;
@@ -20,6 +22,8 @@ interface AppState {
   updatePresentation: (presentation: Presentation) => void;
   updateSlide: (slideIndex: number, slide: Slide) => void;
   resetSession: () => void;
+  addToast: (toast: Omit<ToastData, 'id'>) => void;
+  removeToast: (id: string) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -29,6 +33,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   error: null,
   isRecording: false,
   recordingDuration: 0,
+  toasts: [],
 
   // Actions
   setCurrentSession: (session) => set({ currentSession: session }),
@@ -78,4 +83,17 @@ export const useAppStore = create<AppState>((set, get) => ({
     isRecording: false,
     recordingDuration: 0,
   }),
+  
+  addToast: (toast) => {
+    const id = Math.random().toString(36).substr(2, 9);
+    set((state) => ({
+      toasts: [...state.toasts, { ...toast, id }]
+    }));
+  },
+  
+  removeToast: (id) => {
+    set((state) => ({
+      toasts: state.toasts.filter((toast) => toast.id !== id)
+    }));
+  },
 }));
