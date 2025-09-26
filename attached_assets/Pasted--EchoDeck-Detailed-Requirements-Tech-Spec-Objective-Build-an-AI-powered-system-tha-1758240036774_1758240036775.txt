@@ -1,0 +1,153 @@
+# EchoDeck — Detailed Requirements & Tech Spec
+
+---
+
+## 🎯 Objective
+
+Build an AI-powered system that takes a short spoken prompt (≈3 minutes) and produces a **polished presentation** in multiple formats (PDF, HTML deck, narrated video). The system must highlight OpenAI’s strengths across **speech, text, vision, orchestration, and safety**.
+
+---
+
+## 🧩 Features & Requirements
+
+### 1. Input Handling
+
+* **Voice Recording / Upload**
+
+* Allow user to record audio (mic input) or upload `.mp3/.wav`.
+
+* Max input: 5 minutes.
+
+* **Transcription**
+
+* Use **Whisper API** (or `gpt-4o-mini-transcribe`) for **speech-to-text**.
+
+* Output: verbatim transcript + timestamps.
+
+* Store transcript in structured JSON.
+
+---
+
+### 2. Slide Deck Generation
+
+* **Outline Creation**
+
+* Feed transcript → GPT model (`gpt-4.1` or `gpt-4o`) → generate **presentation outline** (≥5 slides).
+
+* Each slide must contain:
+
+* `title`
+
+* `bullet points (3-5)`
+
+* `speaker notes (script)`
+
+* **Slide Styling**
+
+* Accept style prompt: `“TED Talk” | “Corporate Pitch” | “Storybook”`.
+
+* Apply design template accordingly (colors, fonts, flow).
+
+---
+
+### 3. Visual Generation
+
+* **Images / Illustrations**
+
+* For each slide → call **DALL·E 3 (image generation API)**.
+
+* Inputs: slide title + keywords.
+
+* Output: 16:9 image, safe-checked via moderation API.
+
+* **Charts / Data (optional WOW)**
+
+* If transcript references numbers (e.g., “growth from 20% to 50%”), auto-generate a chart using GPT + matplotlib → embed into slide.
+
+---
+
+### 4. Output Formats
+
+* **PDF Export**
+
+* Use `reportlab` or `python-pptx` to generate a polished PDF.
+
+* **HTML Deck**
+
+* Use `Reveal.js` or `Deck.js` for interactive slide experience.
+
+* Embed generated images + notes.
+
+* **Narrated Video**
+
+* Convert each slide script → TTS (Whisper TTS or `gpt-4o-mini-tts`).
+
+* Combine with slides → `moviepy` or `ffmpeg` to produce `.mp4` with transitions + background music.
+
+---
+
+### 5. Interactivity
+
+* **Storyboard Preview**
+
+* Before final deck → generate draft storyboard (titles + rough notes).
+
+* User can accept/edit.
+
+* **Refinement Mode**
+
+* Conversational edits:
+
+* “Make Slide 2 shorter.”
+
+* “Add a summary slide.”
+
+* Achieved via **long-context memory** in GPT.
+
+---
+
+### 6. Safety / Moderation
+
+* **Content Filtering**
+
+* Run all transcripts + generated outputs through **OpenAI moderation API**.
+
+* Block: offensive prompts, fake data requests, violent/NSFW image prompts.
+
+* **Error Handling**
+
+* If image gen fails → fallback to stock icons (via public APIs).
+
+---
+
+### 7. Integration (WOW)
+
+* **MCP (Model Context Protocol)**
+
+* Integrate with Google Drive / Slides → auto-store generated decks.
+
+* Integration with Notion / Confluence for teams.
+
+* Calendar sync: attach presentation to meeting invite.
+
+---
+
+## 🏗️ Technical Architecture
+
+### High-Level Flow
+
+```
+
+[Audio Input] → [Whisper Transcription] → [GPT Outline & Notes]
+
+→ [Image Generation (DALL·E)]
+
+→ [Deck Assembly (PDF/HTML)]
+
+→ [Narration TTS + Video Export]
+
+→ [Safety Filter + Storage + Sharing]
+
+```
+
+---
