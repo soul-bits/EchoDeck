@@ -180,10 +180,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Tailwind CSS for the utility-first CSS framework
 - Radix UI for accessible component primitives
 
-## 📞 Support
-
-For support, email support@echodeck.com or create an issue in this repository.
-
 ---
 
 **Built with ❤️ using React, TypeScript, Python, and OpenAI**
